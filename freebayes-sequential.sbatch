@@ -1,7 +1,7 @@
 #!/bin/bash 
 #
 #SBATCH --time=10:00:00
-#SBATCH --qos=normal
+#SBATCH -p owners
 #SBATCH --ntasks=1
 #SBATCH --mem=8000
 
@@ -15,7 +15,7 @@ mkdir $VCFOUT/$BASE
 readarray -t CONTIGS < $CONTIGFILE
 for i in "${CONTIGS[@]}"; do
     echo starting $i
-    srun $HOME/bin/freebayes --genotype-qualities --use-best-n-alleles 4 -r $i --vcf $VCFOUT/$BASE/$i.vcf -f $REF $BAMS
+    srun /share/PI/spalumbi/programs/freebayes  --genotype-qualities --use-best-n-alleles 4 -r $i --vcf $VCFOUT/$BASE/$i.vcf -f $REF $BAMS
 done   
 
 wait

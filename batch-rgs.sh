@@ -1,10 +1,10 @@
 #!/bin/bash
 CHUNK=16
 BAM='/scratch/users/noahrose/*.bam'
-COUNTER=1
+COUNTER=0
 OUT='/scratch/users/noahrose/geno_bams'
 for i in $BAM; do
-    if [ $COUNTER -eq 1 ]; then
+    if [ $COUNTER -eq 0 ]; then
     echo -e "#!/bin/bash\n#SBATCH --ntasks=1\n" > $HOME/TEMPBATCH.sbatch; fi
     BASE=$(basename $i)
     SAMP=$(echo $BASE | sed 's/\([0-9]*\).*/\1/g')
@@ -13,8 +13,8 @@ for i in $BAM; do
     let COUNTER=COUNTER+1
     if [ $COUNTER -eq $CHUNK ]; then
     sbatch TEMPBATCH.sbatch
-    COUNTER=1; fi
+    COUNTER=0; fi
 done
-if [ $COUNTER -ne $CHUNK ]; then
+if [ $COUNTER -ne 0 ]; then
 sbatch TEMPBATCH.sbatch; fi
  

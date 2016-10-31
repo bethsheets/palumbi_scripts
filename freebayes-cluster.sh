@@ -1,5 +1,11 @@
 #!/bin/bash
-# usage: freebayes-cluster.sh ref.fa vcfoutdir contiglist ncpu "bams"
+#SBATCH -p owners
+# usage: mkdir vcfout
+# usage: freebayes-cluster.sh ref.fa vcfout contiglist ncpu "bams"
+
+#make a contig list using fasta2bed.sh on your assembly.fa
+#ncpu specify a number of CPUs to use
+#glob all of your .bam files
 
 REF=$1
 VCFOUT=$2
@@ -8,18 +14,16 @@ BAMS="${@:5}"
 ncontigs=($(wc -l $3))
 nlines=$(($ncontigs /  $4))
 echo "Splitting into batches of "$nlines
-rm $SCRATCH/TEMP/LISTS/TEMP-CONTIG-LIST*
-split $3 -l $nlines $SCRATCH/TEMP/LISTS/TEMP-CONTIG-LIST
+split $3 -l $nlines TEMP-CONTIG-LIST
 
-COUNTER=1
-for i in $SCRATCH/TEMP/LISTS/TEMP-CONTIG-LIST* ; do
+for i in TEMP-CONTIG-LIST* ; do
     echo sending out batch $i
     base=$(basename $i) 
-    sed "s,CONTIGFILE=.*,CONTIGFILE=\"${i}\",g" $HOME/scripts/freebayes-sequential-intervals.sbatch > $SCRATCH/TEMP/SBATCH/${base}_TEMPBATCH.sbatch
-    sed -i "s,VCFOUT=.*,VCFOUT=$VCFOUT,g" $SCRATCH/TEMP/SBATCH/${base}_TEMPBATCH.sbatch
-    sed -i "s,REF=.*,REF=$REF,g" $SCRATCH/TEMP/SBATCH/${base}_TEMPBATCH.sbatch
-    sed -i "s,BAMS=.*,BAMS=\"$BAMS\",g" $SCRATCH/TEMP/SBATCH/${base}_TEMPBATCH.sbatch
-    sbatch $SCRATCH/TEMP/SBATCH/${base}_TEMPBATCH.sbatch
-    let COUNTER=COUNTER+1
+    sed "s,CONTIGFILE=.*,CONTIGFILE=\"${i}\",g" $PI_HOME/scripts/freebayes-sequential-intervals.sbatch > ${i}.sbatch
+    sed -i "s,VCFOUT=.*,VCFOUT=$VCFOUT,g" ${i}.sbatch
+    sed -i "s,--output=.*,--output=${i}.out,g" ${i}.sbatch
+    sed -i "s,REF=.*,REF=$REF,g" ${i}.sbatch
+    sed -i "s,BAMS=.*,BAMS=\"$BAMS\",g" ${i}.sbatch
+    sbatch -p owners ${i}.sbatch
 done
 
