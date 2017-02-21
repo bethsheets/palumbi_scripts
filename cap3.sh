@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --time=8:00:00
-#SBATCH --qos=normal
+#SBATCH -p owners,spalumbi
 #SBATCH --mem=24000
 
 ### OPTIONS FOR SHORT READS

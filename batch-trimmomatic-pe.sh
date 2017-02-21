@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#This script generates batches of 5 paired end sequence files, calls the trimmomatic programs, and submits each batch to the cluster
+#This script generates batches of 5 paired end sequence files, calls the trimmomatic program, and submits each batch to the cluster
 
 CHUNK=5
 COUNTER=0

@@ -14,5 +14,5 @@ echo $1
 #blast against uniprot_db
 #remember to update the uniprot_Feb_2016 directory on sherlock regularly
 
-blastx -db /scratch/PI/spalumbi/BLAST_db/uniprot_Feb_2016/uniprot_db -query $1 -out $1.blast.out -evalue 0.001 -max_target_seqs 1 -num_threads 6 -outfmt 5
+blastx -db /scratch/PI/spalumbi/BLAST_db/uniprot_Nov2016/uniprot_db -query $1 -out $1.blast.out -evalue 0.001 -max_target_seqs 1 -num_threads 6 -outfmt 5
 
