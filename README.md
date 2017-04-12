@@ -1,12 +1,8 @@
 # palumbi_scripts
-Most up to date scripts used in the Palumbi lab
-
-# Transcriptome assembly & analysis in the Palumbi Lab*
+Most up to date scripts used in the Palumbi lab for transcriptome assembly & analysis in the Palumbi lab
 
 ## GENERAL INFORMATION
-
 ### * Scripts are formatted for Stanford internal use. We use SLURM to send jobs to Stanford's Sherlock cluster.
-
 
 ### How to create a Sherlock account 
 - to get access and support, e-mail research-computing-support[at]stanford.edu
@@ -30,7 +26,6 @@ Most up to date scripts used in the Palumbi lab
 - backup raw files on external harddrive in lab
 
 ### Sherlock basics 
-
 - `kinit user@stanford.edu` & type in pw to gain permission
 - `ssh user@sherlock.stanford.edu` to access cluster
 - `$HOME` your personal directory
@@ -116,7 +111,6 @@ Check to see how much space you're taking up in the shared SCRATCH directory
 	- `wc - l <filename>`
 - to count contigs in a file
 	- `grep -c “>” <filename>`
-
 
 
 ## DE NOVO TRANSCRIPTOME ASSEMBLY
