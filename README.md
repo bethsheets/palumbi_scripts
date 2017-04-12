@@ -228,9 +228,6 @@ Check to see how much space you're taking up in the shared SCRATCH directory
 
 ### 8a)Annotate with Uniprot database
 - 	Uniprot is a more curated database and is recommended over NCBI-nr
-
-
-
 #### How to download & create the uniprot database for the first time:
 - 	[download Swiss-Prot & Trembl databases](http://www.uniprot.org/downloads)
 
@@ -329,18 +326,22 @@ Check to see how much space you're taking up in the shared SCRATCH directory
 
 ### Map reads to assembly (Bowtie2) 
 - 	[Bowtie2 download](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer)
-
 ```
-	# make a bowtie index from your final assembly
+   make a bowtie index from your final assembly
    bowtie2-build <input.fa> <name_bt2index> 
-   # check that it outputs 6 files .bt2
-   # Option 1: PE reads
+   
+   check that it outputs 6 files .bt2
+   
+   Option 1: PE reads
    bash batch-bowtie2-fq-paired.sh b2index 1 *_1.txt.gz
-   #check TEMPBATCH.sbatch after submitting to see if it started correctly 
+   
+   check TEMPBATCH.sbatch after submitting to see if it started correctly 
    cat TEMPBATCH.sbatch
-   # after it completes, check for errors
+   
+   after it completes, check for errors
    cat slurm*
-   # if rerunning, make sure you remove files that don't allow writing over, i.e.
+   
+   if rerunning, make sure you remove files that don't allow writing over, i.e.
    rm -metrics.txt 
 ```
 
