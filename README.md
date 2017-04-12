@@ -241,7 +241,6 @@ Check to see how much space you're taking up in the shared SCRATCH directory
    ```
 
 ### Run uniprot blast
-
 `bash batch-blast-uniprot.sh infile`
 - the script above splits your assembly into smaller files and calls the blastx on your uniprot database
 - after running, check if you get an error during your blasts
