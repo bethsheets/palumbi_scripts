@@ -237,7 +237,7 @@ Check to see how much space you're taking up in the shared SCRATCH directory
 	# merge two files into one database
 	cat uniprot_sprot.fasta uniprot_trembl.fasta > unitprot_db.fasta
 	# make your new fasta into a database
-   makeblastdb -in uniprot_db.fasta -dbtype prot -out uniprot_db
+        makeblastdb -in uniprot_db.fasta -dbtype prot -out uniprot_db
    ```
 ### Run uniprot blast
 - usage: `bash batch-blast-uniprot.sh infile`
@@ -274,14 +274,13 @@ Check to see how much space you're taking up in the shared SCRATCH directory
 	- `bash batch-blast-uniprot.sh <didnotfinish.fa>`
 		
 ### 8c)Reciprocal BLAST 
-- 	`makeblastdb -in file.fasta -dbtype nucl -out file.fasta –parse_seqids`
-- 	can do this to check overlap between your multiple Trinity alignments 
+
+	`makeblastdb -in file.fasta -dbtype nucl -out file.fasta –parse_seqids`
+- can do this to check overlap between your multiple Trinity alignments 
 	- i.e., does heterozygosity cause issues in your alignments?
 
 ### 8d)Downloading a genome of interest to blast against
-- ex: Lottia giganteam 
 - download cDNA files for blasting your nucleotides against real transcripts
-- `makeblastdb `
 
 ### 9)Parse XML blast files
 - Both the uniprot and nr batch scripts above output XML formatted results
@@ -319,29 +318,30 @@ Check to see how much space you're taking up in the shared SCRATCH directory
 - 	phylogenetic filtering, i.e. microbes using MEGAN, KRAKEN
 
 #### Check out characters about your assembly
-- `perl abyss-fac.pl <assembly.fa>`
 - number of contigs, mean length of contigs, etc.
+	`perl abyss-fac.pl <assembly.fa>`
+
 
 ## TRANSCRIPTOME ANALYSIS
 
 ### Map reads to assembly (Bowtie2) 
 - 	[Bowtie2 download](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer)
 ```
-   make a bowtie index from your final assembly
+   #make a bowtie index from your final assembly
    bowtie2-build <input.fa> <name_bt2index> 
    
-   check that it outputs 6 files .bt2
+   #check that it outputs 6 files .bt2
    
-   Option 1: PE reads
+   #Option 1: PE reads
    bash batch-bowtie2-fq-paired.sh b2index 1 *_1.txt.gz
    
-   check TEMPBATCH.sbatch after submitting to see if it started correctly 
+   #check TEMPBATCH.sbatch after submitting to see if it started correctly 
    cat TEMPBATCH.sbatch
    
-   after it completes, check for errors
+   #after it completes, check for errors
    cat slurm*
    
-   if rerunning, make sure you remove files that don't allow writing over, i.e.
+   #if rerunning, make sure you remove files that don't allow writing over, i.e.
    rm -metrics.txt 
 ```
 
@@ -358,30 +358,33 @@ Check to see how much space you're taking up in the shared SCRATCH directory
 - step 2:
 
 ```
-mkdir vcfout #in same directory as your flash merged samples
+#in same directory as your flash merged samples, make a new vcfout directory
+mkdir vcfout 
+#call the script
 sbatch freebayes-cluster.sh assembly.fa vcfout contiglist ncpu *bam
 
+#the cluster script calls freebayes-sequential-intervals.sbatch
+
 ```
-- if not using cluster script, see `freebayes-sequential-intervals.sbatch`
 
 ### Filter SNPs (vcflib)
 - 	[vcflib website](https://github.com/vcflib/vcflib#vcflib)
 - 	[vcflib scripts](https://github.com/vcflib/vcflib/tree/master/scripts)
 - 	can filter for: read depth, read mapping quality, base quality, minor allele frequency, min number of reads mapped, etc.
 - 	step 1: 
--  `$ fastVCFcombine.sh <outfile> *.vcf`
+`fastVCFcombine.sh <outfile> *.vcf`
 - 	step 2, option 1: filter by genotype (i.e. all individuals must have a quality score of 30 at that SNP)
-- 	`$ sbatch vcf-filter-nomissing-maf05-allgq30.sh #samples <outfile> *.vcf`
+`sbatch vcf-filter-nomissing-maf05-allgq30.sh #samples <outfile> *.vcf`
 -  this is our most strict filter
 - 	step 2, option 2: filter by locus with quality score of 30
-- `$ sbatch vcf-filter-nomissing-maf05-qual30.sh #samples <outfile> *.vcf`
+`sbatch vcf-filter-nomissing-maf05-qual30.sh #samples <outfile> *.vcf`
 - this is slightly less strict and may output more SNPs than the script above
 - step 2, option 3: filter for eSNPs
-- `$ sbatch vcf-filter-nomissing-maf05-eSNPs.sh #samples <outfile> *.vcf`
+`sbatch vcf-filter-nomissing-maf05-eSNPs.sh #samples <outfile> *.vcf`
 - this filter uses min number of mapped reads instead of GQ score because we expect eSNP alternates to have different numbers of reads
 
 ### Create 0,1,2 genotype SNP matrix (vcftools)
-- 	`$ bash vcftools-012genotype-matrix.sh <combined_filtered_file.vcf> <outfil>`
+`bash vcftools-012genotype-matrix.sh <combined_filtered_file.vcf> <outfile>`
 
 ### Format SNP Matrix
 - do this in R
@@ -418,7 +421,7 @@ plot(pc.out$x[,1],pc.out$x[,2])	#PC1 v PC2
 ## GENE EXPRESSION ANALYSIS 
 
 ### Expression counts
-- `bash get-bam-counts.sh *.bam`
+`bash get-bam-counts.sh *.bam`
 
 
 ### WGCNA 
@@ -443,10 +446,9 @@ write.table(sig,file=‘DEcontigs.txt’,quote=F,sep=‘\t')
 ### Samtools
 - [manual](http://www.htslib.org/doc/samtools.html)
 - to view reads mapped to contig of interest
-	- `$ samtools tview <sample.bam> <assembly.fa>`
-	- `$ g` #type in contig name of interest
+`samtools tview <sample.bam> <assembly.fa>`
 
-	- create a file of one contig
-	-  `$ samtools view -bh <file.bam> "Contigname" > <outfile.bam>`
+- create a file of one contig
+`samtools view -bh <file.bam> "Contigname" > <outfile.bam>`
 -  convert bam to fasta for viewing
-		-  `$ samtools bam2fq <infile.bam> | seqtk seq -A > <outfile.fa>`
+`samtools bam2fq <infile.bam> | seqtk seq -A > <outfile.fa>`
