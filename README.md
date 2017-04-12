@@ -239,43 +239,43 @@ Check to see how much space you're taking up in the shared SCRATCH directory
 	# make your new fasta into a database
         makeblastdb -in uniprot_db.fasta -dbtype prot -out uniprot_db
    ```
+
 ### Run uniprot blast
-- usage: `bash batch-blast-uniprot.sh infile`
-	- the script above splits your assembly into smaller files and calls the blastx on your uniprot database
-- 	after running, check if you get an error during your blasts
-	- `cat slurm*` 
-	- most often, your blast may time out
+
+`bash batch-blast-uniprot.sh infile`
+- the script above splits your assembly into smaller files and calls the blastx on your uniprot database
+- after running, check if you get an error during your blasts
+`cat slurm*` 
+- most often, your blast may time out
 - if you get an error:
- 	- `grep -B 1 error slurm*.out`
-  	- for any file with error, take line before (the tempfile)
-	- `cat <TEMPwerror.fa> <TEMPwerror.fa> > <didnotfinish.fa>`
-		- this concatenates all TEMP files that contain an error into a new file
-	- you may want to reduce the # of contigs the batch-blast-uniprot.sh script generates for each TEMP file
-	- `bash batch-blast-uniprot.sh <didnotfinish.fa>` 
+  `grep -B 1 error slurm*.out`
+- for any file with error, take line before (the tempfilee)
+`cat <TEMPwerror.fa> <TEMPwerror.fa> > <didnotfinish.fa>`
+- this concatenates all TEMP files that contain an error into a new file
+- you may want to reduce the # of contigs the batch-blast-uniprot.sh script generates for each TEMP file
+`bash batch-blast-uniprot.sh <didnotfinish.fa>` 
 
 ### 8b)Annotate with NCBI-nr database
 #### How to download & create the nr database for the first time
 - Make sure local database on sherlock is up to date
 - to open .tar files downloaded from genbank: 
-	`for i in *.tar ; do tar -xvf $i ; done &`
-	- blast-nr files are already databases, no need to use makedb script
-- 	usage
-	- `bash batch-blast-nr.sh`
-	- splits your assembly into TEMP files for parallel processing
-- 	after running, check if you get an error during your blasts
-	- `cat slurm*` 
-	- most often, your blast may time out
+`for i in *.tar ; do tar -xvf $i ; done &`
+- blast-nr files are already databases, no need to use makedb script
+- usage
+`bash batch-blast-nr.sh` #splits your assembly into TEMP files for parallel processing
+- after running, check if you get an error during your blasts
+`cat slurm*` 
+- most often, your blast may time out
 - if you get an error:
- 	- `grep -B 1 error slurm*.out`
-  	- for any file with error, take line before (the tempfile)
-	- `cat <TEMPwerror.fa> <TEMPwerror.fa> > <didnotfinish.fa>`
-		- this concatenates all TEMP files that contain an error into a new file
-	- you may want to reduce the # of contigs the batch-blast-uniprot.sh script generates for each TEMP file
-	- `bash batch-blast-uniprot.sh <didnotfinish.fa>`
+ `grep -B 1 error slurm*.out`
+  - for any file with error, take line before (the tempfile)
+`cat <TEMPwerror.fa> <TEMPwerror.fa> > <didnotfinish.fa>` #this concatenates all TEMP files that contain an error into a new file
+- you may want to reduce the # of contigs the batch-blast-uniprot.sh script generates for each TEMP file
+`bash batch-blast-uniprot.sh <didnotfinish.fa>`
 		
 ### 8c)Reciprocal BLAST 
 
-	`makeblastdb -in file.fasta -dbtype nucl -out file.fasta –parse_seqids`
+`makeblastdb -in file.fasta -dbtype nucl -out file.fasta –parse_seqids`
 - can do this to check overlap between your multiple Trinity alignments 
 	- i.e., does heterozygosity cause issues in your alignments?
 
