@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH -p owners
 
 CHUNK=5
 COUNTER=0
